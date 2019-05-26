@@ -37,9 +37,21 @@ export class AppComponent implements OnInit {
     }
   }
 
+
+
+
   deleteItem(i) {
+
+    if(this.todoArray[i].isChecked !=true){
+      alert('only completed item can be deleted')
+      return false
+    }
+    else{
+
     this.todoArray.splice(i, 1);
+
     localStorage.setItem('todos', JSON.stringify(this.todoArray));
+    }
   }
 
 
