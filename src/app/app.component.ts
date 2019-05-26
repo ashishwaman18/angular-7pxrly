@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -7,39 +7,37 @@ import { Component, Input } from '@angular/core';
 })
 export class AppComponent {
 
-  todoArray=[];
+  todoArray = [];
+  isinvalid = false;
 
+  constructor() {
+    this.todoArray = JSON.parse(localStorage.getItem('services_assigned'));
+  }
+  addTodo(toDo) {
 
-  addTodo(todo){
-    this.todoArray.push({
-      title: todo,
-      isChecked: false
-  });
+    if (toDo.value == '') {
+      this.isinvalid = true;
+      return false;
+    }
+    else {
+      this.isinvalid = false;
+      this.todoArray.push({
+        title: toDo.value,
+        isChecked: false
+      });
+      localStorage.setItem('services_assigned', JSON.stringify(this.todoArray));
+      toDo.value = null;
+
+    }
+  }
+
+  deleteItem(i) {
+    this.todoArray.splice(i, 1);
+    localStorage.setItem('services_assigned', JSON.stringify(this.todoArray));
 
   }
 
-
-  // deleteItem(todo){
-
-  //   for(let i=0 ;i<= this.todoArray.length ;i++){
-  //    if(todo== this.todoArray[i]){
-  //      console.log(todo)
-  //     this.todoArray.splice(i,1)
-  //    }
-  //   }
-    
-  //  }
-
-  deleteItem(todo) {
-    const index: number = this.todoArray.indexOf(todo);
-    if (index !== -1) {
-        this.todoArray.splice(index, 1);
-    }        
-}
-
-
-
-   alterCheck(todo){  
-    todo.isChecked=!todo.isChecked;
-    }
+  alterCheck(todo) {
+    todo.isChecked = !todo.isChecked;
+  }
 }
